@@ -19,7 +19,7 @@ const Navbar = () => {
   }, [])
 
   return (
-    <div>
+    <div className='w-full flex align-center justify-between'>
       <h3>CRUD APPLICATION</h3>
       <p>Username = {username}</p>
       {username === 'guest' ? <Link to="/">Login</Link> : <button className='cursor-pointer font-bold bg-red-200 p-2'  onClick={handleLogout}>Logout</button>}

@@ -26,19 +26,31 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <form action="">
-        <h1 className='text-xl'>Login Page</h1>
-        <input className='border border-[#cacaca] px-1 py-2 block' placeholder='Username' type="text" onChange={e => setUsername(e.target.value)} required />
-        <input className='border border-[#cacaca] px-1 py-2 block'  placeholder='Password' type="password" onChange={e => setPassword(e.target.value)} required/>
+    <div className="wrapper bg-orange-50 w-screen h-screen pt-16">
+      <div className='mx-auto pt-8 bg-white w-full max-w-[600px] flex flex-col items-center justify-center p-8'>
+        {/* <Navbar /> */}
+        <h1 className='text-xl font-bold text-center'>Login Page</h1>
+        <p className='mt-2 text-gray-500 text-sm'>A simple todo list up using react.js</p>
 
-        <p>Username : Admin</p>
-        <p>password : adminpassword</p>
-        <p>Username : User</p>
-        <p>password : userpassword</p>
-        <button className='px-5 bg-blue-200 block py-2' type="submit" onClick={handleLogin}>Login</button>
-      </form>
+        <form action="" className='px-auto mt-4 w-full'>
+          <div className='flex flex-col gap-2'>
+            <input className='border border-[#dadada] px-4 py-2 block w-full rounded-md' placeholder='Username' type="text" onChange={e => setUsername(e.target.value)} required />
+            <input className='border border-[#dadada] px-4 py-2 block w-full rounded-md'  placeholder='Password' type="password" onChange={e => setPassword(e.target.value)} required/>
+          </div>
+
+          <button className='px-5 bg-blue-600 block py-2 w-full mt-6 rounded-sm text-blue-50 font-bold' type="submit" onClick={handleLogin}>Login</button>
+          <div className='flex gap-10 mt-8 justify-center'>
+            <div>
+              <p>👤: Admin</p>
+              <p>🔑 : adminpassword</p>
+            </div>
+            <div>
+              <p>👤 : User</p>
+              <p>🔑 : userpassword</p>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

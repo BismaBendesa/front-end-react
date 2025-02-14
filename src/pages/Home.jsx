@@ -1,14 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import Pagination from '../components/Pagination'
 
 
 const Home = () => {
   // store all the tasks
   const [tasks, setTasks] = useState([])
   // store task name for input
-  const [taskName, setTaskName] = useState('')
+  const [taskName, setTaskName] = useState('');
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const taskPerPage = 5;
 
+  // first and last task for slice pagination
+  const lastTask = currentPage * taskPerPage;
+  const firstTask = lastTask - taskPerPage;
+  // const currentTasks = tasks.slice(firstTask, lastTask);
+
+  // change pagination
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber)
+  }
 
   // create new task
   const createTask = (e) => {
@@ -20,11 +32,13 @@ const Home = () => {
     setTaskName('')
   }
 
+  // Toggle Checklist
   const toggleCheckedTask = (id) => {
     const updatedTasks = tasks.map(task => task.id === id ? {...task, status: !task.status} : task)
     setTasks(updatedTasks);
   }
 
+  // Delete Todo
   const deleteTask = (id) => {
     const updatedTasks = tasks.filter(task => task.id !== id)
     setTasks(updatedTasks)
@@ -63,7 +77,9 @@ const Home = () => {
       {/* add new todolist */}
       <input type="text" className='border border-[#cacaca] px-1 py-2 block' placeholder='Add New todo List' onChange={e => setTaskName(e.target.value)}/>
       <button className='bg-blue-600 text-blue-50 cursor-pointer' onClick={createTask}>Confirm</button>
+      {/* Todo List */}
       <div className='todos flex flex-col gap-2'>
+        {/* can be refactor using reusable component */}
         {tasks.length == 0 ? (<p>No Task Found</p>) : (
           tasks.map(task => (
             <div className='todo' key={task.id}>
@@ -73,17 +89,15 @@ const Home = () => {
             </div>
           ))
         )}
-        {/* <div className='todo'>
-          <input type="checkbox" />
-          <label htmlFor="checkbox-1 mr-5 inline-block">Todo List 1</label>
-          <div className='inline-block ml-5 px-2 py-0.5 bg-red-100'>x</div>
-        </div>
-        <div className='todo'>
-          <input type="checkbox" />
-          <label htmlFor="checkbox-1 mr-5 inline-block">Todo List 1</label>
-          <div className='inline-block ml-5 px-2 py-0.5 bg-red-100'>x</div>
-        </div> */}
       </div>
+      
+      {/* Pagination Component */}
+      {/* <Pagination 
+        tasks={tasks}
+        taskPerPage={taskPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+      /> */}
     </div>
   )
 }
