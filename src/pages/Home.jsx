@@ -20,6 +20,8 @@ const Home = () => {
   // flash messages
   const [flashMessage, setFlashMessage] = useState('')
 
+  
+
   // first and last task for slice pagination
   const lastTask = currentPage * taskPerPage;
   const firstTask = lastTask - taskPerPage;
@@ -77,6 +79,8 @@ const Home = () => {
   const toggleOverlay = () => {
     setOverlay(prevOverlay => !prevOverlay)
   }
+
+  
 
 
   // Load all tasks from localstorage
@@ -149,6 +153,7 @@ const Home = () => {
         </div>
         )
       }
+
       
       
       {/* Pagination Component */}
