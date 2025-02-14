@@ -11,6 +11,8 @@ const Home = () => {
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const taskPerPage = 5;
+  // Search 
+  const [searchQuery, setSearchQuery] = useState('')
 
   // first and last task for slice pagination
   const lastTask = currentPage * taskPerPage;
@@ -47,6 +49,12 @@ const Home = () => {
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   }
 
+  // Search
+  // const handleSearchQuery = (e) => {
+  //   setSearchQuery(e.target.value)
+  //   const updatedTasks = tasks.filter()
+  // }
+
 
   // Load all tasks from localstorage
   useEffect(() => {
@@ -63,32 +71,38 @@ const Home = () => {
     } 
   }, [tasks])
 
+  // Search tasks
+  const filteredTasks = tasks.filter((task) => 
+    task.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
 
   return (
     <div>
       <Navbar />
-      <h1>To do List</h1>
-      {/* search bar */}
-      <input type="text" className='border border-[#cacaca] px-1 py-2 block' placeholder='Search To Do List'/>
-      
-      <button className='bg-blue-200 text-blue-800 cursor-pointer'>Add New List</button>
-
-      {/* add new todolist */}
-      <input type="text" className='border border-[#cacaca] px-1 py-2 block' placeholder='Add New todo List' onChange={e => setTaskName(e.target.value)}/>
-      <button className='bg-blue-600 text-blue-50 cursor-pointer' onClick={createTask}>Confirm</button>
-      {/* Todo List */}
-      <div className='todos flex flex-col gap-2'>
-        {/* can be refactor using reusable component */}
-        {tasks.length == 0 ? (<p>No Task Found</p>) : (
-          tasks.map(task => (
-            <div className='todo' key={task.id}>
-              <input id={task.id} type="checkbox" checked={task.status} onChange={() => toggleCheckedTask(task.id)}/>
-              <label htmlFor={task.id} >{task.name}</label>
-              <div className='inline-block ml-5 px-2 py-0.5 bg-red-100 cursor-pointer' onClick={() => deleteTask(task.id)}>x</div>
-            </div>
-          ))
-        )}
+      <div className='m-auto w-full max-w-[600px] px-8 md:px-0'>
+        {/* search bar */}
+        <label htmlFor='search-bar' className='text-xs text-gray-500 mb-1 inline-block'>Search</label>
+        <input type="text" className='w-full rounded-md border border-[#cacaca] px-4 py-1.5 block text-sm' id='search-bar' placeholder='Search To Do List' onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery}/>
+        {/* add new todolist */}
+        {/* <input type="text" className='border border-[#cacaca] px-1 py-2 block' placeholder='Add New todo List' onChange={e => setTaskName(e.target.value)}/>
+        <button className='bg-blue-600 text-blue-50 cursor-pointer' onClick={createTask}>Confirm</button> */}
+        {/* Todo List */}
+        <div className='todos flex flex-col gap-2 my-8'>
+          {/* can be refactor using reusable component */}
+          {filteredTasks.length === 0 ? (<p className='text-center text-gray-600'>No Task Found</p>) : (
+            filteredTasks.map(task => (
+              <div className='todo cursor-pointer flex justify-between items-center bg-white hover:bg-gray-200' key={task.id}>
+                <div className='flex gap-4 grow'>
+                  <input className='scale-125 cursor-pointer' id={task.id} type="checkbox" checked={task.status} onChange={() => toggleCheckedTask(task.id)}/>
+                  <label className='w-full block grow text-sm md:text-base cursor-pointer' htmlFor={task.id} >{task.name}</label>
+                </div>
+                <div className='inline-block ml-5 px-2 py-0.5 text-red-500 cursor-pointer hover:bg-red-200' onClick={() => deleteTask(task.id)}>x</div>
+              </div>
+            ))
+          )}
+        </div>
+        <button className='bg-blue-600 font-bold text-blue-50 cursor-pointer w-full p-2 rounded-full shadow-md hover:bg-blue-400 hover:text-blue-50'>Add New Task +</button>
       </div>
       
       {/* Pagination Component */}

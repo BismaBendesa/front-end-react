@@ -25,8 +25,8 @@ const Navbar = () => {
   }, [])
 
   return (
-    <div className='wrapper w-full flex items-center justify-between '>
-      <nav className='w-full max-w-[600px] flex items-center justify-between m-auto relative pt-2'>
+    <div className='wrapper w-full flex items-center justify-between'>
+      <nav className='w-full max-w-[600px] flex items-center justify-between m-auto relative pt-2 px-8 md:px-0'>
         <h3 className='font-bold md:text-xl text-base'>TODO LIST APPLICATION 📝</h3>
         {/* dropdown */}
         <div className='flex gap-1 items-center cursor-pointer bg-white hover:bg-gray-100 p-2 rounded-full' onClick={toggleDropdown}>
