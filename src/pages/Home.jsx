@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { use, useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Pagination from '../components/Pagination'
 
@@ -13,6 +13,12 @@ const Home = () => {
   const taskPerPage = 5;
   // Search 
   const [searchQuery, setSearchQuery] = useState('')
+
+  // Add Todo Overlay
+  const [overlay, setOverlay] = useState(false)
+
+  // flash messages
+  const [flashMessage, setFlashMessage] = useState('')
 
   // first and last task for slice pagination
   const lastTask = currentPage * taskPerPage;
@@ -32,12 +38,24 @@ const Home = () => {
     const newTask = { id: Date.now(), name : taskName, status: false};
     setTasks([...tasks, newTask]);
     setTaskName('')
+
+    // Show success message
+    setFlashMessage('Task successfully created!');
+    
+    // Hide message after 3 seconds
+    setTimeout(() => setFlashMessage(''), 3000);
   }
 
   // Toggle Checklist
   const toggleCheckedTask = (id) => {
     const updatedTasks = tasks.map(task => task.id === id ? {...task, status: !task.status} : task)
     setTasks(updatedTasks);
+
+    // Show success message
+    setFlashMessage('Task Successfully Updated!');
+    
+    // Hide message after 3 seconds
+    setTimeout(() => setFlashMessage(''), 3000);
   }
 
   // Delete Todo
@@ -47,13 +65,18 @@ const Home = () => {
 
     // update local storage
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+     // Show success message
+    setFlashMessage('Task Successfully Deleted!');
+    
+     // Hide message after 3 seconds
+    setTimeout(() => setFlashMessage(''), 3000);
   }
 
-  // Search
-  // const handleSearchQuery = (e) => {
-  //   setSearchQuery(e.target.value)
-  //   const updatedTasks = tasks.filter()
-  // }
+  // Toggle Overlay
+  const toggleOverlay = () => {
+    setOverlay(prevOverlay => !prevOverlay)
+  }
 
 
   // Load all tasks from localstorage
@@ -80,6 +103,12 @@ const Home = () => {
   return (
     <div>
       <Navbar />
+      {/* Flash Message */}
+      {flashMessage && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg z-90">
+          {flashMessage}
+        </div>
+      )}
       <div className='m-auto w-full max-w-[600px] px-8 md:px-0'>
         {/* search bar */}
         <label htmlFor='search-bar' className='text-xs text-gray-500 mb-1 inline-block'>Search</label>
@@ -102,8 +131,25 @@ const Home = () => {
             ))
           )}
         </div>
-        <button className='bg-blue-600 font-bold text-blue-50 cursor-pointer w-full p-2 rounded-full shadow-md hover:bg-blue-400 hover:text-blue-50'>Add New Task +</button>
+        <button className='bg-blue-600 font-bold text-blue-50 cursor-pointer w-full p-2 rounded-full shadow-md hover:bg-blue-400 hover:text-blue-50' onClick={toggleOverlay}>Add New Task +</button>
       </div>
+      
+      {
+        overlay && ( 
+        <div className='overlay-wrapper fixed inset-0 bg-neutral-900/65' onClick={toggleOverlay}>
+          <div className="add-task-overlay w-full max-w-[400px] p-8 flex flex-col gap-4 bg-white border border-[#dadada] rounded-md mx-auto shadow-lg mt-12" onClick={(e) => e.stopPropagation()}> 
+            <div className='flex justify-between items-center'>
+              <h2 className='font-bold md:text-xl text-base'>Add New Task</h2>
+              <span className='text-2xl px-2 text-red-500 cursor-pointer hover:bg-red-200' onClick={toggleOverlay}>x</span>
+            </div>
+            <hr />
+            <input type="text" placeholder='Add New Task' className='w-full rounded-md border border-[#dadada] py-1.5 px-4 md:text-base text-sm' onChange={e => setTaskName(e.target.value)} />
+            <button type='submit' className='bg-blue-600 font-bold text-blue-50 cursor-pointer w-full p-2 rounded-full shadow-md hover:bg-blue-400 hover:text-blue-50' onClick={createTask}>Add New Task</button>
+          </div>
+        </div>
+        )
+      }
+      
       
       {/* Pagination Component */}
       {/* <Pagination 
