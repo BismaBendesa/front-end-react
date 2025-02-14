@@ -38,7 +38,7 @@ const Login = () => {
             <input className='border border-[#dadada] px-4 py-2 block w-full rounded-md'  placeholder='Password' type="password" onChange={e => setPassword(e.target.value)} required/>
           </div>
 
-          <button className='px-5 bg-blue-600 block py-2 w-full mt-6 rounded-sm text-blue-50 font-bold' type="submit" onClick={handleLogin}>Login</button>
+          <button className='px-5 bg-blue-600 block py-2 w-full mt-6 rounded-sm text-blue-50 font-bold cursor-pointer' type="submit" onClick={handleLogin}>Login</button>
           <div className='flex gap-10 mt-8 justify-center'>
             <div>
               <p>👤: Admin</p>
